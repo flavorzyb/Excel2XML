@@ -9,7 +9,7 @@
  * @date 2012-08-24 10:28:24
  * @version 1.0.0
  */
-package com.zhuyanbin.excel2xml;
+package com.zhuyanbin.je2x;
 
 /**
  * Excel转换成XML文件类库 本类库是将excel文件里的内容转换成XMl文件
