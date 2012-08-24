@@ -1,22 +1,85 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.zhuyanbin.excel2xml</groupId>
-  <artifactId>Excel2XML</artifactId>
-  <version>1.0.0</version>
-  <packaging>jar</packaging>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.zhuyanbin.excel2xml</groupId>
+	<artifactId>Excel2XML</artifactId>
+	<description>本类库是解决EXCEL与XML之间互相转换的问题
+	开发此类库是为了解决EXCEL在subversion等版本管理软件中合并版本时的问题，因EXCEL是二进制文件，
+	因此在合并项目时无法自动合并，因此建立中间件将excel转换成明文的文本模式，从而利于管理和维护。</description>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+	<name>Excel2XML</name>
+	<url>https://github.com/flavorzyb/Excel2XML</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.Libs.loc>${basedir}/libs</project.build.Libs.loc>
+	</properties>
 
-  <name>Excel2XML</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.2</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12</version>
+				<configuration>
+					<argLine>-Djava.library.path=${project.build.Libs.loc}</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<formats>
+						<format>html</format>
+						<format>xml</format>
+					</formats>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.8</version>
+		</dependency>
+	</dependencies>
+
+	<!-- 代码管理仓库 -->
+	<scm>
+		<connection>scm:git:git://github.com/flavorzyb/Excel2XML.git</connection>
+		<developerConnection>scm:git:git@github.com:flavorzyb/Excel2XML.git</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/flavorzyb/Excel2XML</url>
+	</scm>
+
+	<!-- 邮箱设置 -->
+	<mailingLists>
+		<mailingList>
+			<name>朱彦斌</name>
+			<subscribe>flavorzyb2008@gmail.com</subscribe>
+			<unsubscribe>flavorzyb2008@gmail.com</unsubscribe>
+			<post>flavorzyb2008@gmail.com</post>
+			<archive>bug反馈请发送邮件</archive>
+		</mailingList>
+	</mailingLists>
+
+	<organization>
+		<name>风之队</name>
+		<url>https://github.com/flavorzyb/Excel2XML</url>
+	</organization>
 </project>
