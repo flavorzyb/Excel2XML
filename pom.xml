@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.zhuyanbin.excel2xml</groupId>
+	<groupId>com.zhuyanbin.je2x</groupId>
 	<artifactId>Excel2XML</artifactId>
 	<description>本类库是解决EXCEL与XML之间互相转换的问题
 	开发此类库是为了解决EXCEL在subversion等版本管理软件中合并版本时的问题，因EXCEL是二进制文件，
 	因此在合并项目时无法自动合并，因此建立中间件将excel转换成明文的文本模式，从而利于管理和维护。</description>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
-	<name>Excel2XML</name>
+	<name>je2x</name>
 	<url>https://github.com/flavorzyb/Excel2XML</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
