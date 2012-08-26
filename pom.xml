@@ -12,6 +12,7 @@
 	<url>https://github.com/flavorzyb/Excel2XML</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<project.build.Libs.loc>${basedir}/libs</project.build.Libs.loc>
 	</properties>
 
@@ -41,6 +42,17 @@
 					</formats>
 				</configuration>
 			</plugin>
+			<!-- java doc plugin
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.8.1</version>
+				<configuration>
+					<docencoding>${project.reporting.outputEncoding}</docencoding>
+				    <encoding>${project.reporting.outputEncoding}</encoding>
+				</configuration>
+			</plugin>
+			 -->
 		</plugins>
 	</reporting>
 
@@ -79,7 +91,7 @@
 	</mailingLists>
 
 	<organization>
-		<name>风之队</name>
+		<name>zhuyanbin.com</name>
 		<url>https://github.com/flavorzyb/Excel2XML</url>
 	</organization>
 </project>
