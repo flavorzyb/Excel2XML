@@ -24,7 +24,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 /**
  * Excel读取器<br/>
- * 用于读取Excel文件中的数据
+ * 用于读取Excel文件中的数据,并转换成xml格式的数据
  */
 public class ExcelReader
 {
@@ -71,18 +71,30 @@ public class ExcelReader
     /**
      * 获取需要处理的Excel路径(相对路径或绝对路径)
      * 
-     * @return
+     * @return 需要处理的Excel路径
      */
     public String getFileName()
     {
         return _fileName;
     }
-    
+
+    /**
+     * 获取将excel文件转换好之后的xml数据
+     * 
+     * @return 转换好只好的xml数据
+     */
     public String getXmlString()
     {
         return _xmlString;
     }
 
+    /**
+     * 将整个Excel文件转换的实现方法
+     * 
+     * @param wb
+     *            excel文件操作对象
+     * @return 转换之后的xml数据
+     */
     private String parseWorkBook2XmlString(HSSFWorkbook wb)
     {
         String result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -101,6 +113,13 @@ public class ExcelReader
         return result;
     }
 
+    /**
+     * 将Excel文件的工作表(sheet)转换的实现方法
+     * 
+     * @param sheet
+     *            Excel文件的工作表(sheet)
+     * @return 转换之后的xml数据
+     */
     private String parseSheet2XmlString(HSSFSheet sheet)
     {
         String result = "";
@@ -120,6 +139,13 @@ public class ExcelReader
         return result;
     }
 
+    /**
+     * 将Excel文件的工作表(sheet)中的某行(row)转换的实现方法
+     * 
+     * @param row
+     *            Excel文件的工作表(sheet)中的某行(row)
+     * @return 转换之后的xml数据
+     */
     private String parseRow2XmlString(HSSFRow row)
     {
         String result = "";
@@ -137,6 +163,13 @@ public class ExcelReader
         return result;
     }
 
+    /**
+     * 将Excel文件的工作表(sheet)中的某行(row)中的某个单元格(cell)转换的实现方法
+     * 
+     * @param cell
+     *            Excel文件的工作表(sheet)中的某行(row)中的某个单元格(cell)
+     * @return 转换之后的xml数据
+     */
     private String parseCell2XmlString(HSSFCell cell)
     {
         String result = "";
@@ -148,13 +181,27 @@ public class ExcelReader
         return result;
     }
 
+    /**
+     * 设置转换之后的xml数据
+     * 
+     * @param xml
+     *            xml数据
+     */
     private void setXmlString(String xml)
     {
         _xmlString = xml;
     }
 
-    public boolean load() throws FileNotFoundException, IOException
+    /**
+     * 解析Excel文件，并转换成xml数据 <br/>
+     * 如果文件不存在或无法打开Excel文件则抛出异常
+     * 
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public void load() throws FileNotFoundException, IOException
     {
+        setXmlString(null);
         FileInputStream fis = new FileInputStream(getFileName());
 
         try
@@ -178,16 +225,28 @@ public class ExcelReader
             fis.close();
             fis = null;
         }
-
-        return true;
     }
     
-    public boolean load(String fileName) throws FileNotFoundException, IOException
+    /**
+     * 解析Excel文件，并转换成xml数据 <br/>
+     * 如果文件不存在或无法打开Excel文件则抛出异常
+     * 
+     * @param fileName
+     *            需要解析的excel文件
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public void load(String fileName) throws FileNotFoundException, IOException
     {
         setFileName(fileName);
-        return load();
+        load();
     }
 
+    /**
+     * 数值格式化器
+     * 
+     * @return
+     */
     private static DecimalFormat getFormater()
     {
         if (null == format)
@@ -200,6 +259,13 @@ public class ExcelReader
         return format;
     }
 
+    /**
+     * 获取Excel中单元格(cell)数据
+     * 
+     * @param cell
+     *            Excel中的单元格
+     * @return Excel中单元格(cell)数据
+     */
     private String getCellValue(HSSFCell cell)
     {
         String result = "";
