@@ -85,7 +85,9 @@ public class ExcelReader
 
     private String parseWorkBook2XmlString(HSSFWorkbook wb)
     {
-        String result = "";
+        String result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        result += "<Workbook>\n";
+
         if (wb instanceof HSSFWorkbook)
         {
             int as_num = wb.getNumberOfSheets();
@@ -95,6 +97,7 @@ public class ExcelReader
             }
         }
 
+        result += "</Workbook>\n";
         return result;
     }
 
@@ -139,7 +142,7 @@ public class ExcelReader
         String result = "";
         if (cell instanceof HSSFCell)
         {
-            result = "        <cell Width=\"10\">" + getCellValue(cell) + "</cell>\n";
+            result = "        <cell >" + getCellValue(cell) + "</cell>\n";
         }
 
         return result;
