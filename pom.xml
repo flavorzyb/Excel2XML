@@ -42,7 +42,7 @@
 					</formats>
 				</configuration>
 			</plugin>
-			<!-- java doc plugin
+			<!-- java doc plugin begin
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -52,7 +52,7 @@
 				    <encoding>${project.reporting.outputEncoding}</encoding>
 				</configuration>
 			</plugin>
-			 -->
+			 java doc plugin end -->
 		</plugins>
 	</reporting>
 
