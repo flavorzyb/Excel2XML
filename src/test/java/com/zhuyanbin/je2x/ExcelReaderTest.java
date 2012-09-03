@@ -1,9 +1,9 @@
 package com.zhuyanbin.je2x;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.jdom2.Element;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -13,7 +13,8 @@ import org.junit.Test;
 
 public class ExcelReaderTest
 {
-    private final String fileName = "src/test/excel/test.xls";
+    private final String fileName    = "src/test/excel/test.xls";
+    private final String xmlFileName = "src/test/xml/test.xml";
 
     private ExcelReader    classRelection;
     @BeforeClass
@@ -50,11 +51,9 @@ public class ExcelReaderTest
     @Test
     public void testLoadSuccess() throws FileNotFoundException, IOException
     {
+        Assert.assertFalse(classRelection.output(xmlFileName));
         classRelection.load(fileName);
-        Assert.assertTrue(classRelection.getXmlString().length() > 0);
-        FileOutputStream fos = new FileOutputStream("test.xml");
-        fos.write(classRelection.getXmlString().getBytes());
-        fos.flush();
-        fos.close();
+        Assert.assertTrue(classRelection.getXml() instanceof Element);
+        Assert.assertTrue(classRelection.output(xmlFileName));
     }
 }

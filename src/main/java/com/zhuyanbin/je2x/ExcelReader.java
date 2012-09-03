@@ -13,6 +13,7 @@ package com.zhuyanbin.je2x;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 
@@ -21,6 +22,10 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 /**
  * Excel读取器<br/>
@@ -31,13 +36,13 @@ public class ExcelReader
     /**
      * 需要处理的excel文件名
      */
-    private String _fileName = null;
+    private String               _fileName   = null;
 
-    private static DecimalFormat format    = null;
+    private static DecimalFormat format      = null;
     /**
-     * 转换成xml格式的字符串
+     * 转换成xml的Element
      */
-    private String               _xmlString = null;
+    private Element              _xmlElement = null;
 
     /**
      * 默认构造方法
@@ -83,9 +88,9 @@ public class ExcelReader
      * 
      * @return 转换好只好的xml数据
      */
-    public String getXmlString()
+    public Element getXml()
     {
-        return _xmlString;
+        return _xmlElement;
     }
 
     /**
@@ -95,21 +100,23 @@ public class ExcelReader
      *            excel文件操作对象
      * @return 转换之后的xml数据
      */
-    private String parseWorkBook2XmlString(HSSFWorkbook wb)
+    private Element parseWorkBook2Xml(HSSFWorkbook wb)
     {
-        String result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-        result += "<Workbook>\n";
+        Element result = new Element(XmlType.WorkBook);
 
         if (wb instanceof HSSFWorkbook)
         {
             int as_num = wb.getNumberOfSheets();
             for (int i = 0; i < as_num; i++)
             {
-                result += parseSheet2XmlString(wb.getSheetAt(i));
+                Element sheet = parseSheet2Xml(wb.getSheetAt(i));
+                if (null != sheet)
+                {
+                    result.addContent(sheet);
+                }
             }
         }
 
-        result += "</Workbook>\n";
         return result;
     }
 
@@ -120,20 +127,23 @@ public class ExcelReader
      *            Excel文件的工作表(sheet)
      * @return 转换之后的xml数据
      */
-    private String parseSheet2XmlString(HSSFSheet sheet)
+    private Element parseSheet2Xml(HSSFSheet sheet)
     {
-        String result = "";
+        Element result = null;
 
         if (sheet instanceof HSSFSheet)
         {
-            result = "<worksheet name=\"" + sheet.getSheetName() + "\">\n";
+            result = new Element(XmlType.WorkSheet);
+            result.setAttribute("name", sheet.getSheetName());
             int rowCount = sheet.getLastRowNum();
             for (int i = 0; i < rowCount; i++)
             {
-                result += parseRow2XmlString(sheet.getRow(i));
+                Element row = parseRow2Xml(sheet.getRow(i));
+                if (null != row)
+                {
+                    result.addContent(row);
+                }
             }
-
-            result += "</worksheet>\n";
         }
 
         return result;
@@ -146,20 +156,25 @@ public class ExcelReader
      *            Excel文件的工作表(sheet)中的某行(row)
      * @return 转换之后的xml数据
      */
-    private String parseRow2XmlString(HSSFRow row)
+    private Element parseRow2Xml(HSSFRow row)
     {
-        String result = "";
+        Element result = null;
         if (row instanceof HSSFRow)
         {
-            result = "    <row Height=\"" + row.getHeight() + "\">\n";
+            result = new Element(XmlType.Row);
+            result.setAttribute("Height", Short.toString(row.getHeight()));
+
             int cells = row.getLastCellNum();
             for (int i = 0; i < cells; i++)
             {
-                result += parseCell2XmlString(row.getCell(i));
+                Element cell = parseCell2Xml(row.getCell(i));
+                if (null != cell)
+                {
+                    result.addContent(cell);
+                }
             }
-
-            result += "    </row>\n";
         }
+
         return result;
     }
 
@@ -170,12 +185,17 @@ public class ExcelReader
      *            Excel文件的工作表(sheet)中的某行(row)中的某个单元格(cell)
      * @return 转换之后的xml数据
      */
-    private String parseCell2XmlString(HSSFCell cell)
+    private Element parseCell2Xml(HSSFCell cell)
     {
-        String result = "";
+        Element result = null;
         if (cell instanceof HSSFCell)
         {
-            result = "        <cell >" + getCellValue(cell) + "</cell>\n";
+            result = new Element(XmlType.Cell);
+            Element value = getCellValue(cell);
+            if (null != value)
+            {
+                result.addContent(value);
+            }
         }
 
         return result;
@@ -187,9 +207,9 @@ public class ExcelReader
      * @param xml
      *            xml数据
      */
-    private void setXmlString(String xml)
+    private void setXmlElement(Element xml)
     {
-        _xmlString = xml;
+        _xmlElement = xml;
     }
 
     /**
@@ -201,13 +221,13 @@ public class ExcelReader
      */
     public void load() throws FileNotFoundException, IOException
     {
-        setXmlString(null);
+        setXmlElement(null);
         FileInputStream fis = new FileInputStream(getFileName());
 
         try
         {
             POIFSFileSystem fs = new POIFSFileSystem(fis);
-            setXmlString(parseWorkBook2XmlString(new HSSFWorkbook(fs)));
+            setXmlElement(parseWorkBook2Xml(new HSSFWorkbook(fs)));
         }
         catch (IOException ex)
         {
@@ -266,24 +286,53 @@ public class ExcelReader
      *            Excel中的单元格
      * @return Excel中单元格(cell)数据
      */
-    private String getCellValue(HSSFCell cell)
+    private Element getCellValue(HSSFCell cell)
     {
-        String result = "";
+        Element result = null;
         if (cell instanceof HSSFCell)
         {
+            result = new Element(XmlType.Data);
+
             switch (cell.getCellType())
             {
                 case HSSFCell.CELL_TYPE_NUMERIC:
-                    result = "<data type=\"Number\">" + getFormater().format(cell.getNumericCellValue()) + "</data>";
+                    result.setAttribute("type", "Number");
+                    result.setText(getFormater().format(cell.getNumericCellValue()));
                     break;
                 case HSSFCell.CELL_TYPE_BOOLEAN:
-                    result = "<data type=\"Boolean\">" + cell.toString() + "</data>";
+                    result.setAttribute("type", "Boolean");
+                    result.setText(cell.toString());
                     break;
                 case HSSFCell.CELL_TYPE_STRING:
                 default:
-                    result = "<data type=\"String\">" + cell.toString() + "</data>";
+                    result.setAttribute("type", "String");
+                    result.setText(cell.toString());
             }
         }
+
+        return result;
+    }
+
+    public boolean output(String fileName) throws FileNotFoundException, IOException
+    {
+        boolean result = false;
+
+        if (getXml() instanceof Element)
+        {
+            Document document = new Document(getXml());
+            XMLOutputter xop = new XMLOutputter(getFormat());
+            xop.output(document, new FileOutputStream(fileName));
+            result = true;
+        }
+
+        return result;
+    }
+
+    private Format getFormat()
+    {
+        Format result = Format.getCompactFormat();
+        result.setEncoding("utf-8");
+        result.setIndent("    ");
 
         return result;
     }
