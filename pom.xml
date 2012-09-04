@@ -42,17 +42,10 @@
 					</formats>
 				</configuration>
 			</plugin>
-			<!-- java doc plugin begin
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.8.1</version>
-				<configuration>
-					<docencoding>${project.reporting.outputEncoding}</docencoding>
-				    <encoding>${project.reporting.outputEncoding}</encoding>
-				</configuration>
-			</plugin>
-			 java doc plugin end -->
+			<!-- java doc plugin begin <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-javadoc-plugin</artifactId> <version>2.8.1</version> <configuration> 
+				<docencoding>${project.reporting.outputEncoding}</docencoding> <encoding>${project.reporting.outputEncoding}</encoding> 
+				</configuration> </plugin> java doc plugin end -->
 		</plugins>
 	</reporting>
 
@@ -69,12 +62,19 @@
 			<artifactId>poi</artifactId>
 			<version>3.8</version>
 		</dependency>
-		
+
 		<dependency>
-            <groupId>org.jdom</groupId>
-            <artifactId>jdom</artifactId>
-            <version>2.0.2</version>
-        </dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>3.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<!-- 代码管理仓库 -->

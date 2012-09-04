@@ -100,7 +100,7 @@ public class ExcelReader
      *            excel文件操作对象
      * @return 转换之后的xml数据
      */
-    private Element parseWorkBook2Xml(HSSFWorkbook wb)
+    protected Element parseWorkBook2Xml(HSSFWorkbook wb)
     {
         Element result = new Element(XmlType.WorkBook);
 
@@ -127,7 +127,7 @@ public class ExcelReader
      *            Excel文件的工作表(sheet)
      * @return 转换之后的xml数据
      */
-    private Element parseSheet2Xml(HSSFSheet sheet)
+    protected Element parseSheet2Xml(HSSFSheet sheet)
     {
         Element result = null;
 
@@ -156,7 +156,7 @@ public class ExcelReader
      *            Excel文件的工作表(sheet)中的某行(row)
      * @return 转换之后的xml数据
      */
-    private Element parseRow2Xml(HSSFRow row)
+    protected Element parseRow2Xml(HSSFRow row)
     {
         Element result = null;
         if (row instanceof HSSFRow)
@@ -185,7 +185,7 @@ public class ExcelReader
      *            Excel文件的工作表(sheet)中的某行(row)中的某个单元格(cell)
      * @return 转换之后的xml数据
      */
-    private Element parseCell2Xml(HSSFCell cell)
+    protected Element parseCell2Xml(HSSFCell cell)
     {
         Element result = null;
         if (cell instanceof HSSFCell)
@@ -286,7 +286,7 @@ public class ExcelReader
      *            Excel中的单元格
      * @return Excel中单元格(cell)数据
      */
-    private Element getCellValue(HSSFCell cell)
+    protected Element getCellValue(HSSFCell cell)
     {
         Element result = null;
         if (cell instanceof HSSFCell)

@@ -14,7 +14,7 @@ package com.zhuyanbin.je2x;
 /**
  * XML 标签
  */
-public class XmlType
+final public class XmlType
 {
     /**
      * Excel中的Work Book
